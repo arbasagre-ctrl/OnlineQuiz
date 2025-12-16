@@ -6,319 +6,187 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
     <title>Login - LMS Quiz System</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        /* Reset */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; }
 
+        /* Base */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #ffffff;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+            background: #f4f7f9;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            color: #222;
         }
 
-        .login-container {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-            width: 100%;
-            max-width: 1000px;
-            overflow: hidden;
-            display: flex;
-            min-height: 600px;
-        }
-
-        .login-left {
-            flex: 1;
+        /* Top header (brand only) */
+        .navbar {
+            height: 60px;
             background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+            color: white;
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+        }
+
+        .navbar .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 16px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .navbar-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.05rem;
+        }
+
+        .brand-mark {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.12);
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 3rem;
-            color: white;
-            position: relative;
+            font-size: 18px;
         }
 
-        .login-left::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: 
-                radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
-            pointer-events: none;
-        }
-
-        .logo-container {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-        }
-
-        .logo-icon {
-            font-size: 8rem;
-            margin-bottom: 1.5rem;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-
-        .logo-container h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            font-weight: 700;
-        }
-
-        .logo-container p {
-            font-size: 1.1rem;
-            opacity: 0.95;
-            line-height: 1.6;
-        }
-
-        .login-right {
-            flex: 1;
-            padding: 3rem;
+        /* Page wrapper - center the card, place a bit lower */
+        main.page {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 24px 16px;
+            min-height: calc(100vh - 60px);
             display: flex;
-            flex-direction: column;
+            align-items: flex-start;
             justify-content: center;
+        }
+
+        /* Single centered login card (no left side) */
+        .login-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 12px 36px rgba(16,24,40,0.06);
+            width: 100%;
+            max-width: 480px;
+            padding: 28px;
         }
 
         .login-header {
-            margin-bottom: 2rem;
+            text-align: center;
+            margin-bottom: 18px;
         }
 
-        .login-header h2 {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-            color: #333;
+        .login-header h1 {
+            font-size: 1.4rem;
+            color: #111;
+            margin-bottom: 6px;
         }
 
         .login-header p {
-            color: #6c757d;
+            color: #6b7280;
             font-size: 0.95rem;
+            margin: 0;
         }
 
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: #333;
-        }
-
+        .form { margin-top: 12px; }
+        .form-group { margin-bottom: 12px; }
+        .form-label { display:block; margin-bottom:6px; font-weight:600; color:#374151; }
         .form-control {
             width: 100%;
-            padding: 0.75rem;
-            border: 2px solid #e0e0e0;
-            border-radius: 6px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid #e6e6e6;
             font-size: 1rem;
-            transition: all 0.3s;
+            background: #fff;
         }
+        .form-control:focus { outline: none; border-color: #4ade80; box-shadow: 0 0 0 6px rgba(74,222,128,0.06); }
 
-        .form-control:focus {
-            outline: none;
-            border-color: #4ade80;
-            box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.1);
-        }
+        .form-check { display:flex; align-items:center; gap:8px; margin-bottom:12px; color:#374151; }
+        .form-check input[type="checkbox"] { width:16px; height:16px; }
 
-        .form-check {
-            display: flex;
+        /* Buttons - consistent with app */
+        .btn, .btn-login {
+            display: inline-flex;
             align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .form-check input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            margin-right: 0.5rem;
+            justify-content: center;
+            min-height: 44px;
+            padding: 0 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
             cursor: pointer;
-        }
-
-        .form-check label {
-            cursor: pointer;
-            user-select: none;
+            border: none;
+            line-height: 1;
         }
 
         .btn-login {
-            width: 100%;
-            padding: 0.875rem;
             background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .btn-login:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(74, 222, 128, 0.4);
-        }
-
-        .btn-login:active {
-            transform: translateY(0);
+            color: #fff;
+            width: 100%;
         }
 
         .alert {
-            padding: 0.875rem;
-            margin-bottom: 1.5rem;
-            border-radius: 6px;
-            background-color: #f8d7da;
+            padding: 12px;
+            border-radius: 8px;
+            background: #fcebea;
+            color: #611a15;
             border: 1px solid #f5c6cb;
-            color: #721c24;
+            margin-bottom: 12px;
         }
 
-        .alert ul {
-            margin: 0;
-            padding-left: 1.25rem;
-        }
-
-        .alert li {
-            margin: 0.25rem 0;
-        }
-
-        /* Global Full-Screen Loader */
+        /* Global loader */
         .global-loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            backdrop-filter: blur(3px);
+            position: fixed; inset: 0; display: none; align-items:center; justify-content:center; background: rgba(0,0,0,0.6); z-index:9999;
         }
+        .global-loader.active { display:flex; }
+        .loader-content { color: white; font-weight:700; padding:12px; }
 
-        .global-loader.active {
-            display: flex;
-        }
-
-        .loader-content {
-            padding: 3rem;
-            border-radius: 12px;
-            text-align: center;
-        }
-
-        .loader-icon {
-            font-size: 4rem;
-            display: inline-block;
-            margin-bottom: 1rem;
-        }
-
-        .loader-text {
-            font-size: 1.2rem;
-            color: white;
-            font-weight: 600;
-            animation: bounce 1s infinite;
-        }
-
-        @keyframes rotateLoader {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes bounce {
-            0%, 100% { 
-                transform: translateY(0);
-            }
-            50% { 
-                transform: translateY(-15px);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .login-container {
-                flex-direction: column;
-                max-width: 450px;
-                min-height: auto;
-            }
-
-            .login-left {
-                padding: 2rem;
-                min-height: 250px;
-            }
-
-            .logo-icon {
-                font-size: 5rem;
-            }
-
-            .logo-container h1 {
-                font-size: 1.8rem;
-            }
-
-            .logo-container p {
-                font-size: 0.95rem;
-            }
-
-            .login-right {
-                padding: 2rem;
-            }
-
-            .login-header h2 {
-                font-size: 1.5rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .login-left {
-                padding: 1.5rem;
-            }
-
-            .login-right {
-                padding: 1.5rem;
-            }
+        @media (max-width: 520px) {
+            .login-card { padding: 18px; max-width: 420px; }
+            .navbar .container { padding: 0 12px; }
         }
     </style>
 </head>
 <body>
     <!-- Global Loader -->
-    <div class="global-loader" id="globalLoader">
-        <div class="loader-content">
-            <div class="loader-icon">🎓</div>
-            <div class="loader-text">Loading...</div>
-        </div>
+    <div class="global-loader" id="globalLoader" aria-hidden="true">
+        <div class="loader-content">Loading...</div>
     </div>
 
-    <div class="login-container">
-        <!-- Left Side - Logo/Illustration -->
-        <div class="login-left">
-            <div class="logo-container">
-                <div class="logo-icon">🎓</div>
-                <h1>LMS Quiz System</h1>
-                <p>Empowering education through interactive learning and assessment</p>
-            </div>
+    <!-- Header -->
+    <header class="navbar" role="banner">
+        <div class="container">
+            <a href="{{ url('/') }}" class="navbar-brand" aria-label="LMS Quiz System home">
+                <span class="brand-mark" aria-hidden="true">🎓</span>
+                <span>LMS Quiz System</span>
+            </a>
         </div>
+    </header>
 
-        <!-- Right Side - Login Form -->
-        <div class="login-right">
+    <main class="page" role="main">
+        <section class="login-card" aria-labelledby="login-heading">
             <div class="login-header">
-                <h2>Welcome Back!</h2>
-                <p>Sign in to access your account</p>
+                <h1 id="login-heading">Sign in to your account</h1>
+                <p>Access the Quiz Maker and your quizzes after signing in.</p>
             </div>
 
             @if ($errors->any())
-                <div class="alert">
-                    <ul>
+                <div class="alert" role="alert">
+                    <ul style="margin:0 0 0 14px;">
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
                         @endforeach
@@ -326,61 +194,41 @@
                 </div>
             @endif
 
-            <form action="{{ route('login') }}" method="POST">
+            <form action="{{ route('login') }}" method="POST" class="form" id="loginForm" novalidate>
                 @csrf
 
                 <div class="form-group">
-                    <label for="email" class="form-label">Email Address</label>
-                    <input type="email" 
-                           name="email" 
-                           id="email" 
-                           class="form-control" 
-                           value="{{ old('email') }}" 
-                           placeholder="Enter your email"
-                           required 
-                           autofocus>
+                    <label for="email" class="form-label">Email address</label>
+                    <input id="email" name="email" type="email" class="form-control" value="{{ old('email') }}" required autofocus placeholder="name@example.com">
                 </div>
 
                 <div class="form-group">
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" 
-                           name="password" 
-                           id="password" 
-                           class="form-control" 
-                           placeholder="Enter your password"
-                           required>
+                    <input id="password" name="password" type="password" class="form-control" required placeholder="Enter your password">
                 </div>
 
                 <div class="form-check">
-                    <input type="checkbox" 
-                           name="remember" 
-                           id="remember">
+                    <input id="remember" name="remember" type="checkbox" />
                     <label for="remember">Remember me</label>
                 </div>
 
-                <button type="submit" class="btn-login">
-                    Sign In
-                </button>
+                <button type="submit" class="btn-login" aria-label="Sign in">Sign in</button>
             </form>
-        </div>
-    </div>
+        </section>
+    </main>
 
     <script>
-        // Global loader functionality
         const globalLoader = document.getElementById('globalLoader');
+        function showLoader(){ if(globalLoader) globalLoader.classList.add('active'); }
+        function hideLoader(){ if(globalLoader) globalLoader.classList.remove('active'); }
 
-        function showLoader() {
-            if (globalLoader) {
-                globalLoader.classList.add('active');
+        document.addEventListener('DOMContentLoaded', function(){
+            const form = document.getElementById('loginForm');
+            if (form) {
+                form.addEventListener('submit', function(){
+                    showLoader();
+                });
             }
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const loginForm = document.querySelector('form');
-
-            loginForm.addEventListener('submit', function(e) {
-                showLoader();
-            });
         });
     </script>
 </body>
